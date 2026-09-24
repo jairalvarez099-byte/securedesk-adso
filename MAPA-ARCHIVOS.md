@@ -129,6 +129,27 @@ Instalar antes: `npm i -D supertest`
 Comando: `docker compose --env-file .env.docker up -d --build`
 (el puerto 3000 debe estar libre: detener antes `lab-juiceshop`).
 
+## Plan de mejoramiento
+
+| | Ruta exacta | Contenido |
+| - | ----------- | --------- |
+| N | `backend/src/utils/audit.js` | `auditLog()` y `readAuditLog()` en JSON Lines |
+| M | `backend/src/modules/auth/auth.controller.js` | Registra `LOGIN_SUCCESS` y `LOGIN_FAILED` |
+| M | `backend/src/middlewares/auth.middleware.js` | Registra `AUTH_REJECTED` |
+| M | `backend/src/middlewares/roles.middleware.js` | Registra `ACCESS_DENIED` |
+| M | `backend/src/middlewares/rate-limit.middleware.js` | Registra `RATE_LIMIT_EXCEEDED` |
+| M | `backend/src/modules/admin/admin.controller.js` | Registra activacion/desactivacion y `getAuditLog` |
+| M | `backend/src/modules/admin/admin.routes.js` | `GET /admin/audit` solo ADMIN |
+| M | `backend/src/modules/incidents/incidents.controller.js` | Registra `INCIDENT_CREATED` |
+| N | `backend/tests/audit.test.js` | 403 y 401 quedan registrados sin exponer el token |
+| M | `backend/scripts/backup.sh` | Cifrado AES-256, SHA-256, prefijo y copia externa |
+| M | `backend/scripts/restore.sh` | Verifica SHA-256, descifra y usa prefijo `pre-restore` |
+| M | `backend/.env.example`, `.env.docker.example` | `BACKUP_PASSPHRASE`, `BACKUP_OFFSITE_DIR` |
+| M | `docker-compose.yml` | Volumenes `backups` y `logs` |
+| M | `frontend/src/App.jsx`, `pages/Login.jsx` | Sesion sin recargar y boton Cerrar sesion |
+| M | `docs/contingency-plan.md` | Seccion 7: respaldo, RTO/RPO y reversa |
+| M | `README.md` | Instalacion, usuarios, controles, pruebas y enlaces |
+
 ---
 
 ## Orden recomendado si hay que subir archivo por archivo

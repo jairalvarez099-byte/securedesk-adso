@@ -21,12 +21,15 @@ Marcar [x] únicamente después de verificar.
 - [ ] Login inválido responde 400.
 - [ ] Ruta protegida sin JWT responde 401.
 - [ ] ANALISTA en /admin responde 403.
+- [ ] Los eventos de seguridad quedan en logs/security.log.
 
 ## Datos
 - [ ] Prisma valida el schema.
 - [ ] Migraciones están versionadas.
 - [ ] Backup previo fue generado.
 - [ ] El backup no está en Git.
+- [ ] El backup está cifrado (.sql.gz.enc) y tiene huella .sha256.
+- [ ] Se probó una restauración y los datos se verificaron.
 
 ## Funcional
 - [ ] GET /health responde 200.

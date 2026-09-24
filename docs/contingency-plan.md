@@ -53,3 +53,27 @@ Conservar:
 - comandos ejecutados;
 - resultados de verificación;
 - lecciones aprendidas.
+
+## 7. Respaldo, objetivos de recuperación y reversa
+
+### Respaldo
+- Frecuencia: backup completo diario con `./scripts/backup.sh`, y siempre antes de un despliegue.
+- El archivo se comprime y se cifra con AES-256 (`BACKUP_PASSPHRASE`); se acompaña de su huella SHA-256.
+- Copia externa (regla 3-2-1): `BACKUP_OFFSITE_DIR` apunta a otro disco o carpeta sincronizada.
+- En Docker los backups viven en el volumen `backups`, separado del contenedor.
+
+### Objetivos
+- RTO (tiempo máximo para volver a operar): 1 hora.
+- Límite de restauración: 2 horas; al cumplirse sin éxito se ejecuta la reversa.
+- RPO (pérdida máxima de datos aceptada): 24 horas, determinada por el backup diario.
+
+### Reversa (rollback)
+1. Código: `git checkout <commit o etiqueta estable>` y reconstruir con
+   `docker compose --env-file .env.docker up -d --build`.
+2. Datos: solo si el despliegue alteró los datos, restaurar el backup tomado
+   antes del despliegue con `./scripts/restore.sh <archivo>.sql.gz.enc`.
+3. Verificar el criterio de recuperación de la sección 5 y `/meta/version`.
+
+### Prueba de restauración
+Mensual, en un ambiente aislado. Un backup que no se ha restaurado no se
+considera válido.

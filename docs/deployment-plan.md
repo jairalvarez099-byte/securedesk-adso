@@ -51,7 +51,8 @@ Mitigación: backup previo y restore validado.
 ## 6. Controles activos
 - Helmet; CORS restringido; JWT; RBAC; Rate limiting en /auth;
 - Zod; sanitize-html; errorHandler centralizado;
-- selección explícita de campos Prisma; backups PostgreSQL;
+- selección explícita de campos Prisma; backups PostgreSQL cifrados (AES-256 + SHA-256);
+- registro de eventos de seguridad (logs/security.log, GET /admin/audit);
 - tests automatizados.
 
 ## 7. Secuencia de implantación
