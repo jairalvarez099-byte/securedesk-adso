@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { apiFetch } from "../services/api.js";
 
-function Login() {
+function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -19,6 +19,7 @@ function Login() {
     }
     localStorage.setItem("token", data.token);
     setMessage(`Bienvenido ${data.user.name} - Rol: ${data.user.role}`);
+    onLogin?.(data.token);
   }
 
   return (
