@@ -1,0 +1,26 @@
+== Estado de los servicios
+backend: Up 35 seconds (healthy)
+db: Up 20 minutes (healthy)
+frontend: Up 25 seconds
+
+== Eventos generados
+GET /admin/audit con ADMIN:
+  12:09:45 AUTH_REJECTED   userId= None  token invalido o expirado /incidents
+  12:09:45 AUTH_REJECTED   userId= None  token ausente /incidents
+  12:09:45 ACCESS_DENIED   userId= 2 ANALISTA  /admin/stats
+  12:09:45 LOGIN_SUCCESS   userId= 2 ANALISTA  /auth/login
+  12:09:45 LOGIN_SUCCESS   userId= 1 ADMIN  /auth/login
+  12:09:45 LOGIN_FAILED    userId= None  contrasena incorrecta /auth/login
+GET /admin/audit con ANALISTA:
+{"message":"No autorizado para este recurso"}  -> HTTP 403
+
+== Backup cifrado dentro del contenedor
+Backup generado: backups/securedesk_20260924_120945.sql.gz.enc
+
+== Se recrea el contenedor del backend (force-recreate)
+ Container frontend-backend-1 Started 
+Backups que sobreviven:
+securedesk_20260924_120945.sql.gz.enc
+securedesk_20260924_120945.sql.gz.enc.sha256
+Eventos que sobreviven:
+7

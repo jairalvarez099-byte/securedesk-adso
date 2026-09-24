@@ -1,0 +1,46 @@
+$ ./scripts/backup.sh
+Backup generado: backups/securedesk_20260924_070830.sql.gz.enc
+
+$ ls -la backups/securedesk_20260924_070830.sql.gz.enc*
+-rw-r--r--@ 1 jaydev  staff  2432 Sep 24 07:08 backups/securedesk_20260924_070830.sql.gz.enc
+-rw-r--r--@ 1 jaydev  staff    65 Sep 24 07:08 backups/securedesk_20260924_070830.sql.gz.enc.sha256
+
+$ xxd (el contenido es ilegible: esta cifrado)
+00000000: 5361 6c74 6564 5f5f 4734 3ca5 6edd 6ca1  Salted__G4<.n.l.
+00000010: 8e2a 9b9e 78b6 6730 8235 71c0 15bf 8b78  .*..x.g0.5q....x
+00000020: 48d3 2664 d5bd 1b52 d448 511a 1050 1856  H.&d...R.HQ..P.V
+
+$ grep -a -c "CREATE TABLE" sobre el archivo cifrado
+0
+
+$ ./scripts/restore.sh backups/securedesk_20260924_070830.sql.gz.enc
+Integridad verificada (SHA-256).
+Generando backup de seguridad antes del restore...
+Backup generado: backups/pre-restore_20260924_070830.sql.gz.enc
+Restaurando desde: backups/securedesk_20260924_070830.sql.gz.enc
+Restore completado: backups/securedesk_20260924_070830.sql.gz.enc
+
+$ ls backups (el backup previo a la restauracion tiene prefijo propio)
+pre-restore_20260924_070830.sql.gz.enc.sha256
+pre-restore_20260924_070830.sql.gz.enc
+securedesk_20260924_070830.sql.gz.enc.sha256
+securedesk_20260924_070830.sql.gz.enc
+
+== Prueba de integridad: se altera 1 byte de una copia
+Integridad fallida: el backup fue modificado o esta danado.
+(codigo de salida: 1)
+
+== Prueba de clave: frase incorrecta
+bad decrypt
+
+== Datos despues de restaurar
+ usuarios 
+----------
+        3
+(1 row)
+
+ incidentes 
+------------
+          5
+(1 row)
+
