@@ -1,0 +1,15 @@
+== Estado tras reconstruir (correccion pg_dump 16)
+backend Up 35 seconds (healthy)
+db Up 2 minutes (healthy)
+frontend Up 25 seconds
+== Version de pg_dump en el contenedor
+pg_dump (PostgreSQL) 16.15 (Debian 16.15-1.pgdg12+2)
+== Backup dentro del contenedor
+Backup generado: backups/securedesk_20260924_115138.sql
+total 16
+drwxr-xr-x 2 root root 4096 Sep 24 11:51 .
+drwxr-xr-x 1 root root 4096 Sep 24 11:51 ..
+-rw-r--r-- 1 root root 7287 Sep 24 11:51 securedesk_20260924_115138.sql
+3
+== Datos siguen presentes tras rebuild
+{"ok":true,"stats":{"activeUsers":3,"totalIncidents":1,"serverTime":"2026-09-24T11:51:39.119Z"}}

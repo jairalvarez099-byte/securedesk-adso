@@ -1,0 +1,4 @@
+NAME                  IMAGE               COMMAND                  SERVICE    CREATED          STATUS                    PORTS
+frontend-backend-1    frontend-backend    "docker-entrypoint.s…"   backend    31 seconds ago   Up 25 seconds (healthy)   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+frontend-db-1         postgres:16         "docker-entrypoint.s…"   db         31 seconds ago   Up 30 seconds (healthy)   5432/tcp
+frontend-frontend-1   frontend-frontend   "/docker-entrypoint.…"   frontend   31 seconds ago   Up 15 seconds             0.0.0.0:5173->80/tcp, [::]:5173->80/tcp

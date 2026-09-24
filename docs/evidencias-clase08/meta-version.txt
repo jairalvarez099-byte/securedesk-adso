@@ -1,0 +1,22 @@
+HTTP/1.1 200 OK
+Content-Security-Policy: default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Resource-Policy: same-origin
+Origin-Agent-Cluster: ?1
+Referrer-Policy: no-referrer
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+X-Content-Type-Options: nosniff
+X-DNS-Prefetch-Control: off
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 0
+Vary: Origin
+Content-Type: application/json; charset=utf-8
+Content-Length: 103
+ETag: W/"67-Z8AEJ7EsOWBCade7sm/8yAtrmlI"
+Date: Thu, 24 Sep 2026 11:44:04 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"app":"securedesk-backend","version":"1.0.0","build":"local","generatedAt":"2026-09-24T11:44:04.881Z"}

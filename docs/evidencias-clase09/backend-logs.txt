@@ -1,0 +1,9 @@
+backend-1  | 2 migrations found in prisma/migrations
+backend-1  | Applying migration `20260806154934_init_auth`
+backend-1  | Applying migration `20260910115803_add_incidents`
+backend-1  | The following migration(s) have been applied:
+backend-1  | migrations/
+backend-1  |     └─ migration.sql
+backend-1  |     └─ migration.sql
+backend-1  | All migrations have been successfully applied.
+backend-1  | Servidor backend activo en http://localhost:3000

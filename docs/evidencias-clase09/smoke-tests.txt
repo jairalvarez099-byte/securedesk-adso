@@ -1,0 +1,26 @@
+== Frontend http://localhost:5173
+HTTP 200
+<title>SecureDesk ADSO</title>
+== Ruta SPA /incidents (try_files)
+HTTP 200
+== VITE_API_URL incrustada en el JS
+http://localhost:3000
+== /health
+{"ok":true,"message":"Backend funcionando correctamente"}  -> HTTP 200
+== /meta/version
+{"app":"securedesk-backend","version":"1.0.0","build":"docker-local","generatedAt":"2026-09-24T11:49:00.760Z"}  -> HTTP 200
+== Login ADMIN: token recibido = si
+== /admin/stats con ADMIN
+{"ok":true,"stats":{"activeUsers":3,"totalIncidents":0,"serverTime":"2026-09-24T11:49:01.023Z"}}  -> HTTP 200
+== /admin/stats con ANALISTA
+{"message":"No autorizado para este recurso"}  -> HTTP 403
+== POST /incidents con ANALISTA
+HTTP 201
+== GET /incidents con ADMIN (correo completo)
+Prueba despliegue Docker | Incidente creado en el smoke test clase 09 | reporta@securedesk.com
+== GET /incidents con CONSULTA (correo enmascarado)
+Prueba despliegue Docker | re***@securedesk.com
+== GET /incidents sin JWT
+{"message":"Token requerido"}  -> HTTP 401
+== CORS origen no autorizado
+0

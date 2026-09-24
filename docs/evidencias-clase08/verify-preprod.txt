@@ -1,0 +1,62 @@
+
+> backend@1.0.0 verify:preprod
+> node --test
+
+::ffff:127.0.0.1 - - [24/Sep/2026:11:44:02 +0000] "GET /health HTTP/1.1" 200 57 "-" "-"
+✔ GET /health responde 200 y Helmet activo (9.213917ms)
+::ffff:127.0.0.1 - - [24/Sep/2026:11:44:02 +0000] "GET /meta/version HTTP/1.1" 200 108 "-" "-"
+✔ GET /meta/version responde datos de version (9.0425ms)
+::ffff:127.0.0.1 - - [24/Sep/2026:11:44:02 +0000] "GET /ruta-inexistente HTTP/1.1" 404 32 "-" "-"
+✔ Ruta inexistente responde JSON 404 (9.00225ms)
+::ffff:127.0.0.1 - - [24/Sep/2026:11:44:02 +0000] "GET /health HTTP/1.1" 200 57 "-" "-"
+✔ CORS expone header para el origen permitido (9.67675ms)
+::ffff:127.0.0.1 - - [24/Sep/2026:11:44:02 +0000] "GET /health HTTP/1.1" 200 57 "-" "-"
+✔ CORS no expone header para otro origen (1.423584ms)
+[ERROR] ZodError: [
+  {
+    "origin": "string",
+    "code": "invalid_format",
+    "format": "email",
+    "pattern": "/^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$/",
+    "path": [
+      "email"
+    ],
+    "message": "Invalid email address"
+  },
+  {
+    "origin": "string",
+    "code": "too_small",
+    "minimum": 8,
+    "inclusive": true,
+    "path": [
+      "password"
+    ],
+    "message": "Too small: expected string to have >=8 characters"
+  }
+]
+    at login (file:///Users/jaydev/Desktop/frontend/backend/src/modules/auth/auth.controller.js:14:32)
+    at Layer.handleRequest (/Users/jaydev/Desktop/frontend/backend/node_modules/router/lib/layer.js:152:17)
+    at next (/Users/jaydev/Desktop/frontend/backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/Users/jaydev/Desktop/frontend/backend/node_modules/router/lib/route.js:117:3)
+    at handle (/Users/jaydev/Desktop/frontend/backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/Users/jaydev/Desktop/frontend/backend/node_modules/router/lib/layer.js:152:17)
+    at /Users/jaydev/Desktop/frontend/backend/node_modules/router/index.js:295:15
+    at processParams (/Users/jaydev/Desktop/frontend/backend/node_modules/router/index.js:582:12)
+    at next (/Users/jaydev/Desktop/frontend/backend/node_modules/router/index.js:291:5)
+    at router.handle (/Users/jaydev/Desktop/frontend/backend/node_modules/router/index.js:186:3)
+::ffff:127.0.0.1 - - [24/Sep/2026:11:44:02 +0000] "POST /auth/login HTTP/1.1" 400 186 "-" "-"
+✔ POST /auth/login invalido responde 400 (8.119958ms)
+::ffff:127.0.0.1 - - [24/Sep/2026:11:44:02 +0000] "GET /auth/me HTTP/1.1" 401 29 "-" "-"
+✔ GET /auth/me sin token responde 401 (1.817916ms)
+::ffff:127.0.0.1 - - [24/Sep/2026:11:44:02 +0000] "GET /incidents HTTP/1.1" 401 29 "-" "-"
+✔ GET /incidents sin token responde 401 (1.058916ms)
+::ffff:127.0.0.1 - - [24/Sep/2026:11:44:02 +0000] "GET /admin/stats HTTP/1.1" 403 45 "-" "-"
+✔ ANALISTA recibe 403 en /admin/stats (2.411875ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 210.263458

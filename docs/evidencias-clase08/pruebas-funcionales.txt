@@ -1,0 +1,20 @@
+== Login invalido
+{"message":"Datos de entrada invalidos","errors":[{"field":"email","message":"Invalid email address"},{"field":"password","message":"Too small: expected string to have >=8 characters"}]}  -> HTTP 400
+== Login ADMIN
+{"token":"<JWT omitido>","user":{"id":1,"name":"Admin","email":"admin@securedesk.com","role":"ADMIN"}}
+== /admin/stats con ADMIN
+{"ok":true,"stats":{"activeUsers":2,"totalIncidents":5,"serverTime":"2026-09-24T11:44:30.009Z"}}  -> HTTP 200
+== /incidents sin JWT
+{"message":"Token requerido"}  -> HTTP 401
+== Rate limit headers en /auth
+RateLimit-Policy: 30;w=900
+RateLimit-Limit: 30
+RateLimit-Remaining: 27
+RateLimit-Reset: 900
+== prisma validate
+Prisma schema loaded from prisma/schema.prisma.
+The schema at prisma/schema.prisma is valid 🚀
+== backup previo
+Backup generado: backups/securedesk_20260924_064437.sql
+== ANALISTA en /admin/stats (tras reactivar el usuario 2 desde /admin)
+{"message":"No autorizado para este recurso"}  -> HTTP 403

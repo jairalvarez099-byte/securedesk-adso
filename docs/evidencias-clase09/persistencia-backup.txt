@@ -1,0 +1,23 @@
+== Backup dentro del contenedor
+pg_dump: error: aborting because of server version mismatch
+pg_dump: detail: server version: 16.15 (Debian 16.15-1.pgdg13+2); pg_dump version: 15.19 (Debian 15.19-0+deb12u1)
+total 8
+drwxr-xr-x 2 root root 4096 Sep 24 11:49 .
+drwxr-xr-x 1 root root 4096 Sep 24 11:49 ..
+-rw-r--r-- 1 root root    0 Sep 24 11:49 securedesk_20260924_114910.sql
+== Persistencia: docker compose down (sin -v)
+ Container frontend-db-1 Removing 
+ Container frontend-db-1 Removed 
+ Network frontend_default Removing 
+ Network frontend_default Removed 
+local     frontend_pgdata
+== docker compose up -d (sin rebuild)
+ Container frontend-frontend-1 Starting 
+ Container frontend-frontend-1 Started 
+backend Up 30 seconds (healthy)
+db Up 35 seconds (healthy)
+frontend Up 20 seconds
+== Incidentes tras reiniciar
+{"ok":true,"stats":{"activeUsers":3,"totalIncidents":1,"serverTime":"2026-09-24T11:49:56.346Z"}}
+== Backup tras reinicio (sin volumen de backups)
+ls: cannot access 'backups': No such file or directory
