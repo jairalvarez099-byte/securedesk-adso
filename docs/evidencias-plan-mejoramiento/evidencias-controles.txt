@@ -1,0 +1,37 @@
+== 1. Contrasenas en la base: solo el hash bcrypt (costo 10)
+          email          |   role   |           passwordHash           
+-------------------------+----------+----------------------------------
+ admin@securedesk.com    | ADMIN    | $2b$10$/AI4jmigS3OHJZkEYCoLCO...
+ analista@securedesk.com | ANALISTA | $2b$10$qyiLu2Xb6YQBte3kE//o7O...
+ consulta@securedesk.com | CONSULTA | $2b$10$W5GNU8xbMu7UCS5k8gwRKu...
+(3 rows)
+
+== 2. Contenido (payload) de un JWT emitido por /auth/login
+header : {'alg': 'HS256', 'typ': 'JWT'}
+payload: {'id': 3, 'email': 'consulta@securedesk.com', 'role': 'CONSULTA', 'iat': 1790252028, 'exp': 1790255628}
+vigencia: 60 minutos  (firma HS256 de 43 caracteres; no se muestra)
+
+== 3. Token alterado (se cambia el rol a ADMIN sin conocer JWT_SECRET)
+{"message":"Token invalido o expirado"}  -> HTTP 401
+
+== 4. XSS almacenado: se envia un <script> en la descripcion
+guardado -> title: 'Prueba XSS' | description: 'Texto visible' | reporterEmail: juan.perez@empresa.com
+
+== 5. Campo no permitido (.strict) y severidad invalida
+{"message":"Datos de entrada invalidos","errors":[{"field":"severity","message":"Invalid option: expected one of \"LOW\"|\"MEDIUM\"|\"HIGH\""},{"field":"","message":"Unrecognized key: \"isAdmin\""}]}  -> HTTP 400
+
+== 6. Fuerza bruta: 31 intentos de login desde la misma IP
+intento 1 -> HTTP 401
+intento 2 -> HTTP 401
+...
+intento 29 -> HTTP 429
+intento 30 -> HTTP 429
+intento 31 -> HTTP 429
+{"message":"Demasiados intentos, intente mas tarde"}
+
+== 7. Eventos registrados durante estas pruebas (resumen)
+  LOGIN_SUCCESS          2
+  AUTH_REJECTED          1
+  INCIDENT_CREATED       1
+  LOGIN_FAILED           28
+  RATE_LIMIT_EXCEEDED    4
