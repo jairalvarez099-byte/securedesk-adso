@@ -95,6 +95,40 @@ Instalar antes: `npm i -D supertest`
 | N | `backend/tests/routes.test.js` | 404 centralizado |
 | M | `backend/package.json` | Scripts `test` y `verify:preprod` |
 
+## Clase 08 — Documentacion formal del plan de implantacion
+
+| | Ruta exacta | Contenido |
+| - | ----------- | --------- |
+| M | `backend/.env.example` | Agrega `APP_VERSION` y `BUILD_ID` |
+| M | `backend/.env` | Agrega `APP_VERSION` y `BUILD_ID` (NO se versiona) |
+| N | `backend/src/modules/meta/meta.routes.js` | `GET /meta/version` |
+| M | `backend/src/app.js` | Monta `app.use("/meta", metaRoutes)` antes de `notFoundHandler` |
+| N | `backend/tests/meta.test.js` | Prueba de trazabilidad de version |
+| N | `docs/deployment-plan.md` | Plan de implantacion segura (9 secciones) |
+| N | `docs/preprod-checklist.md` | Checklist preproduccion para firmar |
+
+## Clase 09 — Caso integrador y despliegue controlado (Docker Compose)
+
+| | Ruta exacta | Contenido |
+| - | ----------- | --------- |
+| N | `.env.docker.example` | Plantilla de variables Docker (SI se versiona) |
+| N | `.env.docker` | Variables reales Docker (NO se versiona) |
+| M | `.gitignore` | Agrega `.env.docker` |
+| N | `docker-compose.yml` | Servicios `db`, `backend`, `frontend` y volumen `pgdata` |
+| N | `backend/Dockerfile` | Imagen del backend (pg_dump 16 desde PGDG, `migrate deploy`) |
+| N | `backend/.dockerignore` | Excluye `.env`, `backups`, `tests`, `node_modules` |
+| M | `backend/package.json` | `prisma` pasa a `dependencies` (lo usa `migrate deploy` en el contenedor) |
+| M | `backend/scripts/backup.sh` | Borra el archivo si `pg_dump` falla (no deja backups vacios) |
+| N | `frontend/Dockerfile` | Build multi-etapa Node -> Nginx |
+| N | `frontend/.dockerignore` | Excluye `node_modules`, `dist`, `.env*` |
+| N | `frontend/nginx.conf` | `try_files` para la SPA |
+| M | `frontend/src/services/api.js` | `API_URL` unica y `apiFetch()` |
+| M | `frontend/src/pages/Login.jsx` | Usa `apiFetch` (sin URL hardcodeada) |
+| M | `frontend/src/App.jsx` | Usa `apiFetch` |
+
+Comando: `docker compose --env-file .env.docker up -d --build`
+(el puerto 3000 debe estar libre: detener antes `lab-juiceshop`).
+
 ---
 
 ## Orden recomendado si hay que subir archivo por archivo

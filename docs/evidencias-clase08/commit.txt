@@ -1,0 +1,1 @@
+b4413b0 SecureDesk ADSO: clases 01-09 (trazabilidad /meta/version, plan de implantacion y despliegue con Docker Compose)
