@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { prisma } from "../../lib/prisma.js";
 import { sanitizeText } from "../../utils/sanitize.js";
+import { auditLog } from "../../utils/audit.js";
 
 const sanitizedString = (min, max) =>
   z
@@ -71,6 +72,11 @@ export async function createIncident(req, res, next) {
         createdById: req.user.id,
       },
       select: incidentSelect,
+    });
+
+    auditLog("INCIDENT_CREATED", req, {
+      incidentId: incident.id,
+      severity: incident.severity,
     });
 
     const result = serializeIncidentForUser(incident, req.user.role);

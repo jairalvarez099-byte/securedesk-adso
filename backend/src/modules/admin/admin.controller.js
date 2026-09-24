@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { prisma } from "../../lib/prisma.js";
+import { auditLog, readAuditLog } from "../../utils/audit.js";
 
 const userIdSchema = z.coerce.number().int().positive();
 
@@ -62,6 +63,8 @@ export async function deactivateUser(req, res, next) {
       select: safeUserSelect,
     });
 
+    auditLog("USER_DEACTIVATED", req, { targetUserId: id });
+
     return res.json({
       message: "Usuario desactivado",
       user,
@@ -92,6 +95,8 @@ export async function activateUser(req, res, next) {
       select: safeUserSelect,
     });
 
+    auditLog("USER_ACTIVATED", req, { targetUserId: id });
+
     return res.json({
       message: "Usuario activado",
       user,
@@ -99,4 +104,10 @@ export async function activateUser(req, res, next) {
   } catch (error) {
     return next(error);
   }
+}
+
+export function getAuditLog(req, res) {
+  return res.json({
+    events: readAuditLog(50),
+  });
 }

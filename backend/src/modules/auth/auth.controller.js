@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { z } from "zod";
 
 import { prisma } from "../../lib/prisma.js";
+import { auditLog } from "../../utils/audit.js";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -18,12 +19,20 @@ export async function login(req, res, next) {
     });
 
     if (!user || !user.isActive) {
+      auditLog("LOGIN_FAILED", req, {
+        email: parsed.email,
+        reason: user ? "usuario inactivo" : "usuario inexistente",
+      });
       return res.status(401).json({ message: "Credenciales invalidas" });
     }
 
     const valid = await bcrypt.compare(parsed.password, user.passwordHash);
 
     if (!valid) {
+      auditLog("LOGIN_FAILED", req, {
+        email: parsed.email,
+        reason: "contrasena incorrecta",
+      });
       return res.status(401).json({ message: "Credenciales invalidas" });
     }
 
@@ -32,6 +41,11 @@ export async function login(req, res, next) {
       process.env.JWT_SECRET,
       { expiresIn: "1h" },
     );
+
+    auditLog("LOGIN_SUCCESS", req, {
+      userId: user.id,
+      role: user.role,
+    });
 
     return res.json({
       token,

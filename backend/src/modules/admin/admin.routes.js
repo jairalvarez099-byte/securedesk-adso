@@ -2,7 +2,12 @@ import { Router } from "express";
 
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
 import { authorizeRoles } from "../../middlewares/roles.middleware.js";
-import { getStats, deactivateUser, activateUser } from "./admin.controller.js";
+import {
+  getStats,
+  deactivateUser,
+  activateUser,
+  getAuditLog,
+} from "./admin.controller.js";
 
 const router = Router();
 
@@ -21,5 +26,7 @@ router.patch(
   authorizeRoles("ADMIN"),
   activateUser,
 );
+
+router.get("/audit", authMiddleware, authorizeRoles("ADMIN"), getAuditLog);
 
 export default router;
