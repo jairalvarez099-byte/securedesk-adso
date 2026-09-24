@@ -27,6 +27,11 @@ services:
       FRONTEND_ORIGIN: ${FRONTEND_ORIGIN}
       APP_VERSION: ${APP_VERSION}
       BUILD_ID: ${BUILD_ID}
+      BACKUP_PASSPHRASE: ${BACKUP_PASSPHRASE}
+    volumes:
+      # Backups y registro de eventos sobreviven a la recreacion del contenedor.
+      - backups:/app/backups
+      - logs:/app/logs
     depends_on:
       db:
         condition: service_healthy
@@ -53,3 +58,5 @@ services:
 
 volumes:
   pgdata:
+  backups:
+  logs:

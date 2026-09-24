@@ -21,7 +21,7 @@ case "$PG_URL" in
 esac
 
 if [ -z "${1:-}" ]; then
-  echo "Uso: ./scripts/restore.sh backups/archivo.sql"
+  echo "Uso: ./scripts/restore.sh backups/archivo.sql.gz.enc"
   exit 1
 fi
 
@@ -32,13 +32,33 @@ if [ ! -f "$BACKUP_FILE" ]; then
   exit 1
 fi
 
+if [ -f "$BACKUP_FILE.sha256" ]; then
+  EXPECTED="$(cat "$BACKUP_FILE.sha256")"
+  ACTUAL="$(openssl dgst -sha256 -r "$BACKUP_FILE" | cut -d' ' -f1)"
+  if [ "$EXPECTED" != "$ACTUAL" ]; then
+    echo "Integridad fallida: el backup fue modificado o esta danado."
+    exit 1
+  fi
+  echo "Integridad verificada (SHA-256)."
+fi
+
 echo "Generando backup de seguridad antes del restore..."
-"$SCRIPT_DIR/backup.sh"
+# Prefijo propio: si se restaura en el mismo segundo en que se creo el backup,
+# el respaldo de seguridad no puede sobrescribir el archivo que se va a restaurar.
+BACKUP_PREFIX="pre-restore" "$SCRIPT_DIR/backup.sh"
 
 echo "Restaurando desde: $BACKUP_FILE"
-psql \
-  --set ON_ERROR_STOP=on \
-  "$PG_URL" \
-  < "$BACKUP_FILE"
+case "$BACKUP_FILE" in
+  *.enc)
+    : "${BACKUP_PASSPHRASE:?BACKUP_PASSPHRASE no definida: no se puede descifrar}"
+    openssl enc -d -aes-256-cbc -pbkdf2 -iter 100000 \
+      -pass env:BACKUP_PASSPHRASE -in "$BACKUP_FILE" \
+      | gunzip \
+      | psql --set ON_ERROR_STOP=on --quiet "$PG_URL"
+    ;;
+  *)
+    psql --set ON_ERROR_STOP=on --quiet "$PG_URL" < "$BACKUP_FILE"
+    ;;
+esac
 
 echo "Restore completado: $BACKUP_FILE"
