@@ -8,7 +8,7 @@ Informática (SENA — ADSO) y usado como proyecto del **plan de mejoramiento**.
 | --- | --- |
 | Repositorio | https://github.com/jairalvarez099-byte/securedesk-adso |
 | Etiqueta y rama de entrega | `plan-mejoramiento` |
-| Video técnico (YouTube) | _pendiente de publicar_ |
+| Video técnico (YouTube) | https://youtu.be/Ytj2ghnjxjI |
 | Documento técnico (PDF) | [`docs/plan-mejoramiento/Plan_Mejoramiento_Seguridad_Jair_Alvarez.pdf`](docs/plan-mejoramiento/Plan_Mejoramiento_Seguridad_Jair_Alvarez.pdf) |
 
 Autor: Jair Álvarez — Análisis y Desarrollo de Software (ADSO), SENA.
